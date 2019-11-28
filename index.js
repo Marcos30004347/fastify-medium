@@ -24,6 +24,20 @@ fastify.register(require('fastify-autoload'), {
     },
 });
 
+const { ApolloServer } = require('apollo-server-fastify');
+const { resolvers } = require("./graphql/resolvers");
+const { typeDefs } = require("./graphql/typeDefs");
+
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    introspection: true,
+    playground: true,
+    tracing: true,
+});
+
+fastify.register(server.createHandler());
+
 // Queremos que nosso servidor escute na porta 3000.
 const run = async () => {
   try {
